@@ -1,6 +1,7 @@
 package com.revature.eval.java.core;
 
 import java.time.temporal.Temporal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,8 +15,19 @@ public class EvaluationService {
 	 * @return
 	 */
 	public String reverse(String string) {
-		
-		return "";
+
+		char[] forward = new char[string.length()];
+		char[] backward = new char[string.length()];
+		int count = 0;
+		for (int i = 0; i < string.length(); i++) {
+			forward[i] = string.charAt(i);
+		}
+		for (int i = string.length() - 1; i > -1; i--) {
+			backward[count] = forward[i];
+			count++;
+		}
+		String reversed = new String(backward);
+		return reversed;
 	}
 
 	/**
@@ -28,7 +40,21 @@ public class EvaluationService {
 	 */
 	public String acronym(String phrase) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		/*
+		 * Split a phrase that is given by the space use for loop to cycle through an
+		 * array take the first letter of each array's cell. Set the first letter
+		 * substring(0) equal to a array of letters.
+		 */
+		String[] splitString = phrase.split(" |-");
+		char[] charArr = new char[splitString.length];
+		for (int i = 0; i < splitString.length; i++) {
+			charArr[i] = splitString[i].charAt(0);
+			// newString += newString.concat(firstLetter.toString());
+		}
+		String acronym = String.valueOf(charArr);
+		System.out.println(acronym);
+		acronym = acronym.toUpperCase();
+		return acronym;
 	}
 
 	/**
@@ -81,18 +107,29 @@ public class EvaluationService {
 		}
 
 		public boolean isEquilateral() {
-			// TODO Write an implementation for this method declaration
-			return false;
+			if (getSideOne() == getSideTwo() && getSideTwo() == getSideThree() && getSideThree() == getSideOne()) {
+				return true;
+
+			} else
+				return false;
 		}
 
 		public boolean isIsosceles() {
-			// TODO Write an implementation for this method declaration
-			return false;
+			if (getSideOne() == getSideTwo() && getSideTwo() == getSideThree() && getSideThree() == getSideOne()
+					|| getSideOne() == getSideTwo() && getSideTwo() != getSideThree() && getSideThree() != getSideOne()
+					|| getSideOne() != getSideTwo() && getSideTwo() != getSideThree() && getSideThree() == getSideOne()
+					|| getSideOne() != getSideTwo() && getSideTwo() == getSideThree()
+							&& getSideThree() != getSideOne()) {
+				return true;
+			} else
+				return false;
 		}
 
 		public boolean isScalene() {
-			// TODO Write an implementation for this method declaration
-			return false;
+			if (getSideOne() != getSideTwo() && getSideTwo() != getSideThree() && getSideThree() != getSideOne()) {
+				return true;
+			} else
+				return false;
 		}
 
 	}
@@ -113,8 +150,55 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int getScrabbleScore(String string) {
-		// TODO Write an implementation for this method declaration
-		return 0;
+
+		char[] onePt = { 'A', 'E', 'I', 'O', 'U', 'L', 'N', 'R', 'S', 'T' };
+		char[] twoPt = { 'D', 'G' };
+		char[] threePt = { 'B', 'C', 'M', 'P' };
+		char[] fourPt = { 'F', 'H', 'V', 'W', 'Y' };
+		char[] fivePt = { 'K' };
+		char[] eightPt = { 'J', 'X' };
+		char[] tenPt = { 'Q', 'Z' };
+		int score = 0;
+
+		for (int i = 0; i < string.length(); i++) {
+			for (int x = 0; x < onePt.length; x++) {
+				if (string.charAt(i) == onePt[x]) {
+					score++;
+				}
+			}
+			for (int x = 0; x < twoPt.length; x++) {
+				if (string.charAt(i) == twoPt[x]) {
+					score+= 2;
+				}
+			}
+			for (int x = 0; x < threePt.length; x++) {
+				if (string.charAt(i) == threePt[x]) {
+					score+= 3;
+				}
+			}
+			for (int x = 0; x < fourPt.length; x++) {
+				if (string.charAt(i) == fourPt[x]) {
+					score+= 4;
+				}
+			}
+			for (int x = 0; x < fivePt.length; x++) {
+				if (string.charAt(i) == fivePt[x]) {
+					score+= 5;
+				}
+			}
+			for (int x = 0; x < eightPt.length; x++) {
+				if (string.charAt(i) == eightPt[x]) {
+					score+= 8;
+				}
+			}
+			for (int x = 0; x < tenPt.length; x++) {
+				if (string.charAt(i) == tenPt[x]) {
+					score+= 10;
+				}
+			}
+		}
+
+		return score;
 	}
 
 	/**
@@ -149,8 +233,28 @@ public class EvaluationService {
 	 * NANP-countries, only 1 is considered a valid country code.
 	 */
 	public String cleanPhoneNumber(String string) {
-		// TODO Write an implementation for this method declaration
-		return null;
+
+		char[] cleanNumber = new char[string.length()];
+		StringBuilder cleanestNumber = new StringBuilder();
+
+		/*
+		 * if(cleanestNumber.charAt(0) == '+') { cleanestNumber.deleteCharAt(0); }
+		 * if(cleanestNumber.charAt(0) == '1') { cleanestNumber.deleteCharAt(0); }
+		 */
+
+		for (int i = 0; i < string.length(); i++) {
+			cleanNumber[i] = string.charAt(i);
+			if (Character.isDigit(cleanNumber[i])) {
+				cleanestNumber.append(cleanNumber[i]);
+			}
+		}
+		System.out.println("Number" + cleanestNumber);
+		String number = new String(cleanestNumber);
+		if (number.length() > 11) {
+			return null;
+		} else
+			return number;
+
 	}
 
 	/**
