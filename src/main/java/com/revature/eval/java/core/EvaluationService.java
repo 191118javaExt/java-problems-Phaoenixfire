@@ -52,7 +52,6 @@ public class EvaluationService {
 			// newString += newString.concat(firstLetter.toString());
 		}
 		String acronym = String.valueOf(charArr);
-		System.out.println(acronym);
 		acronym = acronym.toUpperCase();
 		return acronym;
 	}
@@ -159,8 +158,9 @@ public class EvaluationService {
 		char[] eightPt = { 'J', 'X' };
 		char[] tenPt = { 'Q', 'Z' };
 		int score = 0;
-
+		string = string.toUpperCase();
 		for (int i = 0; i < string.length(); i++) {
+
 			for (int x = 0; x < onePt.length; x++) {
 				if (string.charAt(i) == onePt[x]) {
 					score++;
@@ -168,32 +168,32 @@ public class EvaluationService {
 			}
 			for (int x = 0; x < twoPt.length; x++) {
 				if (string.charAt(i) == twoPt[x]) {
-					score+= 2;
+					score += 2;
 				}
 			}
 			for (int x = 0; x < threePt.length; x++) {
 				if (string.charAt(i) == threePt[x]) {
-					score+= 3;
+					score += 3;
 				}
 			}
 			for (int x = 0; x < fourPt.length; x++) {
 				if (string.charAt(i) == fourPt[x]) {
-					score+= 4;
+					score += 4;
 				}
 			}
 			for (int x = 0; x < fivePt.length; x++) {
 				if (string.charAt(i) == fivePt[x]) {
-					score+= 5;
+					score += 5;
 				}
 			}
 			for (int x = 0; x < eightPt.length; x++) {
 				if (string.charAt(i) == eightPt[x]) {
-					score+= 8;
+					score += 8;
 				}
 			}
 			for (int x = 0; x < tenPt.length; x++) {
 				if (string.charAt(i) == tenPt[x]) {
-					score+= 10;
+					score += 10;
 				}
 			}
 		}
@@ -248,7 +248,7 @@ public class EvaluationService {
 				cleanestNumber.append(cleanNumber[i]);
 			}
 		}
-		System.out.println("Number" + cleanestNumber);
+
 		String number = new String(cleanestNumber);
 		if (number.length() > 11) {
 			return null;
@@ -346,9 +346,49 @@ public class EvaluationService {
 	 * @param string
 	 * @return
 	 */
-	public String toPigLatin(String string) {
+	public static String toPigLatin(String string) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		// If a string has a consonent sound at the beginning move it to end of word.
+		// Add ay to the end of word once vowel at beginning.
+		String[] splitString = string.split(" ");
+		String finalString = new String();
+		char placeHolder;
+		for (int i = 0; i < splitString.length; i++) {
+			StringBuilder pigLatin = new StringBuilder(splitString[i]);
+
+			while (pigLatin.charAt(0) != 'a' && pigLatin.charAt(0) != 'e' && pigLatin.charAt(0) != 'i'
+					&& pigLatin.charAt(0) != 'o' && pigLatin.charAt(0) != 'u') {
+
+				if (pigLatin.charAt(0) == 'u') {
+					placeHolder = pigLatin.charAt(0);
+					pigLatin.deleteCharAt(0);
+					pigLatin.append(placeHolder);
+
+				}
+
+				placeHolder = pigLatin.charAt(0);
+				pigLatin.deleteCharAt(0);
+				pigLatin.append(placeHolder);
+			}
+
+			if (pigLatin.charAt(0) == 'a' || pigLatin.charAt(0) == 'e' || pigLatin.charAt(0) == 'i'
+					|| pigLatin.charAt(0) == 'o' || pigLatin.charAt(0) == 'u') {
+				if (pigLatin.charAt(pigLatin.length() - 1) == 'q') {
+					if (pigLatin.charAt(0) == 'u') {
+						placeHolder = pigLatin.charAt(0);
+						pigLatin.deleteCharAt(0);
+						pigLatin.append(placeHolder);
+
+					}
+				}
+				pigLatin.append("ay ");
+
+			}
+			finalString += pigLatin.toString();
+		}
+		finalString = finalString.trim();
+
+		return finalString;
 	}
 
 	/**
@@ -368,7 +408,27 @@ public class EvaluationService {
 	 */
 	public boolean isArmstrongNumber(int input) {
 		// TODO Write an implementation for this method declaration
-		return false;
+		int placeHolder = input;
+		int armstrongNumber = 0;
+		int count = 0;
+		boolean isArmstrong = false;
+		while (placeHolder > 0) {
+			count++;
+			placeHolder /= 10;
+		}
+
+		placeHolder = input;
+
+		while (placeHolder > 0) {
+			armstrongNumber += Math.pow(placeHolder % 10, count);
+			placeHolder /= 10;
+		}
+		System.out.println(armstrongNumber);
+		if (input == armstrongNumber) {
+			isArmstrong = true;
+			System.out.println(isArmstrong);
+		}
+		return isArmstrong;
 	}
 
 	/**
@@ -383,6 +443,13 @@ public class EvaluationService {
 	 */
 	public List<Long> calculatePrimeFactorsOf(long l) {
 		// TODO Write an implementation for this method declaration
+
+		for (int i = 2; i < l; i++) {
+			if (l % i == 0) {
+
+			}
+		}
+
 		return null;
 	}
 
@@ -440,9 +507,24 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int calculateNthPrime(int i) {
-		// TODO Write an implementation for this method declaration
-		return 0;
-	}
+
+			/*int[] primeArray = new int[i];
+			int count = 2;
+			for (int k = 0; k <= primeArray.length; k++) {
+
+				if (count == 2) {
+					primeArray[k] = count;
+					count++;
+					System.out.println(primeArray[0]);
+				}
+				else if{
+					for(int x = 0; x < )
+				}
+					
+			*/
+			return 0;
+		}
+	
 
 	/**
 	 * 13 & 14. Create an implementation of the atbash cipher, an ancient encryption
