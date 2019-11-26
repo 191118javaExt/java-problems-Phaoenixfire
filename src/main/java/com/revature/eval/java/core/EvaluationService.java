@@ -1,6 +1,7 @@
 package com.revature.eval.java.core;
 
 import java.time.temporal.Temporal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -267,8 +268,22 @@ public class EvaluationService {
 	 * @return
 	 */
 	public Map<String, Integer> wordCount(String string) {
-		// TODO Write an implementation for this method declaration
-		return null;
+
+		// Still fails the splitting on line test.
+		String[] splitStr = string.split(" |,|\r+\n+");
+
+		Map<String, Integer> numWords = new HashMap<String, Integer>();
+
+		for (int k = 0; k < splitStr.length; k++) {
+			Integer count = numWords.get(splitStr[k]);
+			if (count == null) {
+				numWords.put(splitStr[k], 1);
+			} else {
+				numWords.put(splitStr[k], count + 1);
+			}
+		}
+
+		return numWords;
 	}
 
 	/**
@@ -348,7 +363,7 @@ public class EvaluationService {
 	 */
 	public static String toPigLatin(String string) {
 		// TODO Write an implementation for this method declaration
-		// If a string has a consonent sound at the beginning move it to end of word.
+		// If a string has a consonant sound at the beginning move it to end of word.
 		// Add ay to the end of word once vowel at beginning.
 		String[] splitString = string.split(" ");
 		String finalString = new String();
@@ -423,10 +438,10 @@ public class EvaluationService {
 			armstrongNumber += Math.pow(placeHolder % 10, count);
 			placeHolder /= 10;
 		}
-		System.out.println(armstrongNumber);
+
 		if (input == armstrongNumber) {
 			isArmstrong = true;
-			System.out.println(isArmstrong);
+			// System.out.println(isArmstrong);
 		}
 		return isArmstrong;
 	}
@@ -443,14 +458,25 @@ public class EvaluationService {
 	 */
 	public List<Long> calculatePrimeFactorsOf(long l) {
 		// TODO Write an implementation for this method declaration
+		ArrayList<Long> primeFactors = new ArrayList<Long>();
 
-		for (int i = 2; i < l; i++) {
-			if (l % i == 0) {
+		while (l % 2 == 0) {
 
+			primeFactors.add((long) 2);
+			l = l / 2;
+		}
+		for (long i = 3; i <= Math.sqrt(l); i += 2) {
+			while (l % i == 0) {
+				l = l / i;
+				primeFactors.add(i);
 			}
 		}
+		if (l > 2) {
+			primeFactors.add(l);
+		}
 
-		return null;
+		return primeFactors;
+
 	}
 
 	/**
@@ -489,9 +515,23 @@ public class EvaluationService {
 
 		public String rotate(String string) {
 			// TODO Write an implementation for this method declaration
-			return null;
-		}
+			StringBuilder sb = new StringBuilder(string);
 
+			for (int i = 0; i < sb.length(); i++) {
+				if (Character.isUpperCase(string.charAt(i))) {
+					char ch = (char) (((int) string.charAt(i) + key - 65) % 26 + 65);
+
+					sb.append(ch);
+
+				} else {
+					char ch = (char) (((int) string.charAt(i) + key - 97) % 26 + 97);
+					sb.append(ch);
+				}
+			}
+			String rotated = sb.toString();
+
+			return rotated;
+		}
 	}
 
 	/**
@@ -507,24 +547,23 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int calculateNthPrime(int i) {
+		List<Integer> li = new ArrayList<Integer>(i);
 
-			/*int[] primeArray = new int[i];
-			int count = 2;
-			for (int k = 0; k <= primeArray.length; k++) {
+		for (int k = 2; li.size() < i; k++) {
+			Integer count = 0;
 
-				if (count == 2) {
-					primeArray[k] = count;
+			for (int j = 2; j < k; j++) {
+				if (k % j == 0) {
 					count++;
-					System.out.println(primeArray[0]);
 				}
-				else if{
-					for(int x = 0; x < )
-				}
-					
-			*/
-			return 0;
+			}
+			if (count == 0) {
+				li.add(k);
+			}
 		}
-	
+
+		return li.get(i - 1);
+	}
 
 	/**
 	 * 13 & 14. Create an implementation of the atbash cipher, an ancient encryption
@@ -559,8 +598,29 @@ public class EvaluationService {
 		 * @return
 		 */
 		public static String encode(String string) {
+			string = string.toLowerCase();
 			// TODO Write an implementation for this method declaration
-			return null;
+			String forward = new String("abcdefghijklmnopqrstuvwxyz");
+			String backward = new String("zyxwvutsrqponmlkjihgfedcba");
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0; i < string.length(); i++) {
+				int b = forward.indexOf(string.charAt(i));
+
+				if (Character.isDigit(string.charAt(i))) {
+					sb.append(string.charAt(i));
+				} else if (b != -1) {
+
+					char c = string.charAt(i);
+					int x = forward.indexOf(c);
+					sb.append(backward.charAt(x));
+				}
+			}
+			for (int i = 5; i < sb.length(); i += 6) {
+				sb.insert(i, " ");
+			}
+			String encoded = new String(sb);
+
+			return encoded;
 		}
 
 		/**
@@ -570,8 +630,29 @@ public class EvaluationService {
 		 * @return
 		 */
 		public static String decode(String string) {
+
 			// TODO Write an implementation for this method declaration
-			return null;
+			String forward = new String("abcdefghijklmnopqrstuvwxyz");
+			String backward = new String("zyxwvutsrqponmlkjihgfedcba");
+			StringBuilder sb = new StringBuilder(string);
+			StringBuilder sb2 = new StringBuilder();
+			for (int i = 0; i < sb.length(); i++) {
+				if (sb.charAt(i) == ' ') {
+					sb.deleteCharAt(i);
+				}
+			}
+			for (int i = 0; i < sb.length(); i++) {
+				if (Character.isDigit(sb.charAt(i))) {
+					sb2.append(sb.charAt(i));
+				} else {
+					char c = sb.charAt(i);
+					int x = backward.indexOf(c);
+					sb2.append(forward.charAt(x));
+				}
+			}
+
+			String decode = new String(sb2);
+			return decode;
 		}
 	}
 
@@ -602,6 +683,11 @@ public class EvaluationService {
 		return false;
 	}
 
+	public static void StringBuilder() {
+		// TODO Auto-generated method stub
+
+	}
+
 	/**
 	 * 16. Determine if a sentence is a pangram. A pangram (Greek: παν γράμμα, pan
 	 * gramma, "every letter") is a sentence using every letter of the alphabet at
@@ -616,8 +702,20 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isPangram(String string) {
-		// TODO Write an implementation for this method declaration
-		return false;
+
+		StringBuilder sb = new StringBuilder("abcdefghijklmnopqrstuvwxyz");
+		for (int i = 0; i < string.length(); i++) {
+			for (int k = 0; k < sb.length(); k++) {
+				if (string.charAt(i) == sb.charAt(k)) {
+					sb.deleteCharAt(k);
+				}
+			}
+		}
+		if (sb.length() == 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -647,7 +745,13 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int getSumOfMultiples(int i, int[] set) {
-		// TODO Write an implementation for this method declaration
+		/*
+		 * HAS TO ACCOUNT FOR DUPLICATE NUMBERS. Take first number in set and make it
+		 * add to a number of the for loop up until it equals i. Take second number in
+		 * set and multiply it until it equals i. continue. return the sum of the
+		 * numbers
+		 */
+
 		return 0;
 	}
 
@@ -720,7 +824,7 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int solveWordProblem(String string) {
-		// TODO Write an implementation for this method declaration
+
 		return 0;
 	}
 
