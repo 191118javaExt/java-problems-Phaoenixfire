@@ -268,10 +268,13 @@ public class EvaluationService {
 	 * @return
 	 */
 	public Map<String, Integer> wordCount(String string) {
-
+		String[] splitStr;
 		// Still fails the splitting on line test.
-		String[] splitStr = string.split(" |,|\r+\n+");
-
+		if (string.contains("\n")) {
+			splitStr = string.split(",\\n");
+		} else {
+			splitStr = string.split(" |,");
+		}
 		Map<String, Integer> numWords = new HashMap<String, Integer>();
 
 		for (int k = 0; k < splitStr.length; k++) {
@@ -680,12 +683,38 @@ public class EvaluationService {
 	 */
 	public boolean isValidIsbn(String string) {
 		// TODO Write an implementation for this method declaration
-		return false;
-	}
+		StringBuilder sb = new StringBuilder(string);
+		for (int i = 0; i < sb.length(); i++) {
+			if (sb.charAt(i) == '-') {
+				sb.deleteCharAt(i);
+			}
+		}
+		int count = 10;
+		int sum = 0;
+		if(sb.charAt(sb.length()-1) != 'X'  || Character.isDigit(sb.length()-1) == true) {
+			return false;
+		}
+		for (int i = 0; i < sb.length(); i++) {
 
-	public static void StringBuilder() {
-		// TODO Auto-generated method stub
+			if (sb.charAt(i) == 'x' || sb.charAt(i) == 'X') {
+				sum += (count * 10);
+				System.out.println(sb.charAt(i) + " " + sum);
+				count--;
 
+			} else {
+
+				sum = sum + (count * (Character.getNumericValue(sb.charAt(i))));
+				System.out.println("Count:" + count + " i: " + i + "Char at: " + (sb.charAt(i)) + "Sum: " + sum);
+				count--;
+			}
+		}
+		System.out.println(sum);
+		System.out.println(sum % 11);
+		if (sum % 11 == 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
