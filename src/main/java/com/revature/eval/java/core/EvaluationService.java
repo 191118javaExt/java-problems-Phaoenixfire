@@ -251,8 +251,8 @@ public class EvaluationService {
 		}
 
 		String number = new String(cleanestNumber);
-		if (number.length() > 11) {
-			return null;
+		if (number.length() != 10) {
+			throw new IllegalArgumentException();
 		} else
 			return number;
 
@@ -364,7 +364,7 @@ public class EvaluationService {
 	 * @param string
 	 * @return
 	 */
-	public static String toPigLatin(String string) {
+	public String toPigLatin(String string) {
 		// TODO Write an implementation for this method declaration
 		// If a string has a consonant sound at the beginning move it to end of word.
 		// Add ay to the end of word once vowel at beginning.
@@ -564,7 +564,11 @@ public class EvaluationService {
 				li.add(k);
 			}
 		}
-
+		if(i <= 0) {
+			throw new IllegalArgumentException();
+			
+		}
+		else
 		return li.get(i - 1);
 	}
 
@@ -691,25 +695,22 @@ public class EvaluationService {
 		}
 		int count = 10;
 		int sum = 0;
-		if(sb.charAt(sb.length()-1) != 'X'  || Character.isDigit(sb.length()-1) == true) {
+		if (sb.charAt(sb.length() - 1) != 'X' || Character.isDigit(sb.length() - 1) == true) {
 			return false;
 		}
 		for (int i = 0; i < sb.length(); i++) {
 
 			if (sb.charAt(i) == 'x' || sb.charAt(i) == 'X') {
 				sum += (count * 10);
-				System.out.println(sb.charAt(i) + " " + sum);
 				count--;
 
 			} else {
 
 				sum = sum + (count * (Character.getNumericValue(sb.charAt(i))));
-				System.out.println("Count:" + count + " i: " + i + "Char at: " + (sb.charAt(i)) + "Sum: " + sum);
 				count--;
 			}
 		}
-		System.out.println(sum);
-		System.out.println(sum % 11);
+
 		if (sum % 11 == 0) {
 			return true;
 		} else {
@@ -756,7 +757,7 @@ public class EvaluationService {
 	 * @return
 	 */
 	public Temporal getGigasecondDate(Temporal given) {
-		// TODO Write an implementation for this method declaration
+		
 		return null;
 	}
 
@@ -822,7 +823,47 @@ public class EvaluationService {
 	 */
 	public boolean isLuhnValid(String string) {
 		// TODO Write an implementation for this method declaration
-		return false;
+		int sum = 0;
+		String[] newString = string.split("-| ");
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < newString.length; i++) {
+
+			sb.append(newString[i]);
+			System.out.println(sb);
+
+		}
+		System.out.println(sb.length() % 2);
+		for (int i = 1; i < sb.length(); i += 2) {
+			if (sb.length() % 2 == 0) {
+				int x = Character.getNumericValue(sb.charAt(i - 1));
+				x = (x * 2);
+				if (x > 9) {
+					x -= 9;
+				}
+				sb.setCharAt(i - 1, (char) (x + 48));
+
+			} else if (sb.length() % 2 == 1) {
+
+				int x = Character.getNumericValue(sb.charAt(i));
+				x = (x * 2);
+				if (x > 9) {
+					x -= 9;
+				}
+				sb.setCharAt(i, (char) (x + 48));
+
+			}
+		}
+
+		for (int i = 0; i < sb.length(); i++) {
+			sum += Character.getNumericValue(sb.charAt(i));
+		}
+		if (sum % 10 == 0) {
+
+			return true;
+
+		} else
+
+			return false;
 	}
 
 	/**

@@ -4,21 +4,18 @@ public class Driver {
 
 	public static void main(String[] args) {
 
-		calculateNthPrime(10001);
+		solveWordProblem("What is -3 multiplied by 25?");
 	}
 
-	public static int calculateNthPrime(int i) {
+	public static int solveWordProblem(String string) {
 
-		int[] primeArray = new int[i];
-		int count = 2;
-		for (int k = 0; k <= primeArray.length; k++) {
-
-			if (count == 2) {
-				primeArray[k] = count;
-				count++;
-				System.out.println(primeArray[0]);
-			}
-		}
-		return primeArray[primeArray.length - 1];
+		/*
+		 * Filter out filler leading up to the first number
+		 * if the first number is negative check for minus sign
+		 * following the first int search for keyword of operation
+		 * find last number and perform the final operation*/
+			
+		
+		return 0;
 	}
 }
