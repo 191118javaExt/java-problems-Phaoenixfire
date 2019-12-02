@@ -3,8 +3,10 @@ package com.revature.eval.java.core;
 import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class EvaluationService {
 
@@ -518,21 +520,28 @@ public class EvaluationService {
 
 		public String rotate(String string) {
 			// TODO Write an implementation for this method declaration
-			StringBuilder sb = new StringBuilder(string);
+			StringBuilder sb = new StringBuilder();
 
-			for (int i = 0; i < sb.length(); i++) {
-				if (Character.isUpperCase(string.charAt(i))) {
-					char ch = (char) (((int) string.charAt(i) + key - 65) % 26 + 65);
-
-					sb.append(ch);
-
-				} else {
-					char ch = (char) (((int) string.charAt(i) + key - 97) % 26 + 97);
-					sb.append(ch);
+			for (int i = 0; i < string.length(); i++) {
+				char last = string.charAt(i);
+				int lastNum = last;
+				if ((lastNum >= 65 && lastNum <= 90)) {
+					lastNum += key;
+					if (lastNum > 90) {
+						lastNum -= 26;
+					}
+					last = (char) lastNum;
+				} else if (lastNum >= 97 && lastNum <= 122) {
+					lastNum += key;
+					if (lastNum > 122) {
+						lastNum -= 26;
+					}
+					last = (char) lastNum;
 				}
-			}
-			String rotated = sb.toString();
+				sb.append(last);
 
+			}
+			String rotated = new String(sb);
 			return rotated;
 		}
 	}
@@ -564,12 +573,11 @@ public class EvaluationService {
 				li.add(k);
 			}
 		}
-		if(i <= 0) {
+		if (i <= 0) {
 			throw new IllegalArgumentException();
-			
-		}
-		else
-		return li.get(i - 1);
+
+		} else
+			return li.get(i - 1);
 	}
 
 	/**
@@ -686,7 +694,7 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isValidIsbn(String string) {
-		// TODO Write an implementation for this method declaration
+
 		StringBuilder sb = new StringBuilder(string);
 		for (int i = 0; i < sb.length(); i++) {
 			if (sb.charAt(i) == '-') {
@@ -695,15 +703,14 @@ public class EvaluationService {
 		}
 		int count = 10;
 		int sum = 0;
-		if (sb.charAt(sb.length() - 1) != 'X' || Character.isDigit(sb.length() - 1) == true) {
-			return false;
-		}
+
 		for (int i = 0; i < sb.length(); i++) {
-
-			if (sb.charAt(i) == 'x' || sb.charAt(i) == 'X') {
-				sum += (count * 10);
-				count--;
-
+			if (Character.isLetter(sb.charAt(i))) {
+				if (sb.charAt(sb.length() - 1) == 'x' || sb.charAt(sb.length() - 1) == 'X') {
+					sum += (count * 10);
+					count--;
+				} else
+					return false;
 			} else {
 
 				sum = sum + (count * (Character.getNumericValue(sb.charAt(i))));
@@ -757,7 +764,7 @@ public class EvaluationService {
 	 * @return
 	 */
 	public Temporal getGigasecondDate(Temporal given) {
-		
+
 		return null;
 	}
 
@@ -781,8 +788,23 @@ public class EvaluationService {
 		 * set and multiply it until it equals i. continue. return the sum of the
 		 * numbers
 		 */
+		Set<Integer> multiples = new HashSet<Integer>();
 
-		return 0;
+		// TODO Write an implementation for this method declaration
+		for (int n : set) {
+			int j = 1;
+
+			while (n * j < i) {
+				multiples.add(n * j);
+				j++;
+			}
+
+		}
+		int sum = 0;
+		for (int k : multiples) {
+			sum += k;
+		}
+		return sum;
 	}
 
 	/**
@@ -824,15 +846,14 @@ public class EvaluationService {
 	public boolean isLuhnValid(String string) {
 		// TODO Write an implementation for this method declaration
 		int sum = 0;
-		String[] newString = string.split("-| ");
+		String[] newString = string.split(" ");
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < newString.length; i++) {
 
 			sb.append(newString[i]);
-			System.out.println(sb);
 
 		}
-		System.out.println(sb.length() % 2);
+
 		for (int i = 1; i < sb.length(); i += 2) {
 			if (sb.length() % 2 == 0) {
 				int x = Character.getNumericValue(sb.charAt(i - 1));
@@ -895,7 +916,51 @@ public class EvaluationService {
 	 */
 	public int solveWordProblem(String string) {
 
-		return 0;
+		String[] splitString = string.split(" |\\?");
+		int a = 0;
+		int b = 0;
+		int sum = 0;
+		for (int i = 0; i < splitString.length; i++) {
+			for (int j = 0; j < splitString[i].length(); j++) {
+				if (splitString[i].charAt(j) == '-') {
+					if (a == 0) {
+						a = (Integer.parseInt(splitString[i]));
+						System.out.println(a);
+					} else {
+						b = (Integer.parseInt(splitString[i]));
+
+					}
+				} else if (Character.isDigit(splitString[i].charAt(j))) {
+					if (a == 0) {
+						a = (Integer.parseInt(splitString[i]));
+						System.out.println(a);
+					} else {
+						b = (Integer.parseInt(splitString[i]));
+						System.out.println("This is reading b: " + b);
+						System.out.println(a);
+
+					}
+				}
+
+			}
+		}
+		for (String n : splitString) {
+			if (n.equals("plus")) {
+				sum = a + b;
+				System.out.println(sum);
+			} else if (n.equals("multiplied")) {
+				sum = a * b;
+				System.out.println(sum);
+			} else if (n.equals("divided")) {
+				sum = a / b;
+				System.out.println(sum);
+			} else if (n.equals("minus")) {
+				sum = a - b;
+				System.out.println(sum);
+			}
+		}
+
+		return sum;
 	}
 
 }
